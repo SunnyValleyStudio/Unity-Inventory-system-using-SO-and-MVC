@@ -50,6 +50,13 @@ public class UIInventoryPage : MonoBehaviour
         }
     }
 
+    internal void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description)
+    {
+        itemDescription.SetDescription(itemImage, name, description);
+        DeselectAllItems();
+        listOfUIItems[itemIndex].Select();
+    }
+
     public void UpdateData(int itemIndex, 
         Sprite itemImage, int itemQuantity)
     {
@@ -115,7 +122,7 @@ public class UIInventoryPage : MonoBehaviour
         ResetSelection();
     }
 
-    private void ResetSelection()
+    public void ResetSelection()
     {
         itemDescription.ResetDescription();
         DeselectAllItems();
