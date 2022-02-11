@@ -52,6 +52,15 @@ namespace Inventory.UI
             }
         }
 
+        internal void ResetAllItems()
+        {
+            foreach (var item in listOfUIItems)
+            {
+                item.ResetData();
+                item.Deselect();
+            }
+        }
+
         internal void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description)
         {
             itemDescription.SetDescription(itemImage, name, description);
@@ -86,6 +95,7 @@ namespace Inventory.UI
                 return;
             }
             OnSwapItems?.Invoke(currentlyDraggedItemIndex, index);
+            HandleItemSelection(inventoryItemUI);
         }
 
         private void ResetDraggedItem()
