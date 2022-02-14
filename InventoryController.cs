@@ -3,6 +3,7 @@ using Inventory.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace Inventory
@@ -62,7 +63,7 @@ namespace Inventory
             IItemAction itemAction = inventoryItem.item as IItemAction;
             if(itemAction != null)
             {
-                itemAction.PerformAction(gameObject);
+                itemAction.PerformAction(gameObject, null);
             }
             IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;
             if(destroyableItem != null)
@@ -93,8 +94,24 @@ namespace Inventory
                 return;
             }
             ItemSO item = inventoryItem.item;
+            string description = PrepareDescription(inventoryItem);
             inventoryUI.UpdateDescription(itemIndex, item.ItemImage,
-                item.name, item.Description);
+                item.name, description);
+        }
+
+        private string PrepareDescription(InventoryItem inventoryItem)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(inventoryItem.item.Description);
+            sb.AppendLine();
+            for (int i = 0; i < inventoryItem.itemState.Count; i++)
+            {
+                sb.Append($"{inventoryItem.itemState[i].itemParameter.ParameterName} " +
+                    $": {inventoryItem.itemState[i].value} / " +
+                    $"{inventoryItem.item.DefaultParametersList[i].value}");
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
 
         public void Update()
